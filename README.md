@@ -16,7 +16,7 @@
   $ conda activate qc
   $ conda deactivate
   ```
-  4- Install packages using conda:
+  4- Install main packages using conda:
   ```
    conda install --file requirements.txt
   ```
