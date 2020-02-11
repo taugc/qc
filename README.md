@@ -18,7 +18,7 @@
   ```
   4- Install main packages using conda:
   ```
-   conda install --file requirements.txt
+   conda install -c bioconda --file requirements.txt
   ```
 
   ## Code of conduct

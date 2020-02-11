@@ -26,34 +26,46 @@ parser.add_argument("e",
                     help="Choose experiment: (0): RNAseq (1): Others")
 parser.add_argument("f",
                     nargs=1,
-                    type=argparse.FileType('r'),
+                    type=str,
                     help="Forward fastq.gz file.")
 parser.add_argument("-r",
                     nargs=1,
-                    type=argparse.FileType('r'),
+                    type=str,
                     help="Reverse fastq.gz file.")
 
 args = parser.parse_args()
 
 qc_rnaseq = qc_helper.QualityControlRNAseq()
-out_dir = '{}_out_dir'.format(args.id)
+experiment = args.e[0]
+type_seq = args.t[0]
+sample = args.id[0]
+out_dir = '{}_out_dir'.format(sample)
 
 if not os.path.exists(out_dir):
-    out_dir = '{}_out_dir'.format(args.id)
+    out_dir = '{}_out_dir'.format(sample)
     os.makedirs(out_dir)
 
-# RNAseq
-if args.e == 0:
+print(experiment,type_seq,sample,out_dir)
 
-  if args.t == 'PE' or args.t == 'pe':
-    qc_rnaseq.trimmomaticPE(args.f,args.r,args.id,out_dir)
-    #run fastqc
-
-  elif args.t == 'SE' or args.t == 'se':
-    qc_rnaseq.trimmomaticSE(args.f,args.id,out_dir)
-    #run fastqc
-
-  #Create report
+############################ RNAseq ######################################
+if experiment == 0:
+  if type_seq == 'PE' or type_seq == 'pe':
+    r1=args.f[0]
+    r2=args.r[0]
+    os.system('trimmomatic PE -phred33 {} {} {}/{}_L001_R1_001_paired.fq.gz {}/{}_L001_R1_001_unpaired.fq.gz {}/{}_L001_R2_001_paired.fq.gz {}/{}_L001_R2_001_unpaired.fq.gz \
+               ILLUMINACLIP:/src/adapters.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:35'
+               .format(r1,r2,out_dir,sample,out_dir,sample,out_dir,sample,out_dir,sample))
+   
+  elif type_seq == 'SE' or type_seq == 'se':
+    r1=args.f[0]  
+    os.system('trimmomatic SE -phred33 {} {}/{}_L001_R1_001_paired.fq.gz \
+               ILLUMINACLIP:/src/adapters.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:35'
+               .format(r1,out_dir,sample))
+    
+  else:
+    print('Error: Invalid parameter!')
+  
+  os.system('fastqc {}/*_paired*' .format(out_dir))
 
 else:
   print('Sorry, there is just RNAseq module for while!')
