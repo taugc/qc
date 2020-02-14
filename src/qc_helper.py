@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import subprocess
 
 class ProcessResult:
 
@@ -15,7 +16,7 @@ class ProcessResult:
 
   def run_fastQC(self, out_dir):
     os.system('fastqc {}/*_paired*' .format(out_dir))
-
+    
   def get_typeseq(self, typeseq):
     if typeseq == 'PE' or typeseq == 'pe':
       return 'Pair-End'
@@ -25,9 +26,8 @@ class ProcessResult:
       return 'Unknow'
 
   def get_n_reads(self, path):
-    lines = os.system('zcat {} | wc -l'.format(path))
-    total_reads = int(lines) / 4
-    return total_reads
+    total_reads = subprocess.check_output(' expr $(zcat {} | wc -l) / 4'.format(path), shell=True)
+    return int(total_reads.strip())
 
   
 

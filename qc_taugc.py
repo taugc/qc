@@ -9,7 +9,7 @@ from reportlab.pdfgen.canvas import Canvas
 from reportlab.graphics.shapes import *
 from reportlab.graphics import renderPDF
 from reportlab.graphics.charts.barcharts import VerticalBarChart
-from reportlab.platypus import Image, Paragraph, BaseDocTemplate, Frame, PageTemplate, SimpleDocTemplate, Spacer, PageBreak, Flowable, NextPageTemplate
+from reportlab.platypus import Image, Paragraph, Table, BaseDocTemplate, TableStyle, PageTemplate, SimpleDocTemplate, Spacer, PageBreak, Flowable, NextPageTemplate
 from reportlab.lib.pagesizes import A4,landscape, letter
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.units import inch, cm, mm
@@ -69,19 +69,28 @@ if experiment == 0:
   if type_seq == 'PE' or type_seq == 'pe':
     r1=args.f[0]
     r2=args.r[0]
-    pr.run_trimPE(r1,r2,out_dir,sample,adapters)
-    pr.run_fastQC(out_dir)
+    # pr.run_trimPE(r1,r2,out_dir,sample,adapters)
+    # pr.run_fastQC(out_dir)
+    os.system('unzip {}/{}_L001_R1_001_paired_fastqc.zip'.format(out_dir, sample))
+    os.system('unzip {}/{}_L001_R2_001_paired_fastqc.zip'.format(out_dir, sample))
 
   elif type_seq == 'SE' or type_seq == 'se':
     r1=args.f[0]
-    pr.run_trimSE(r1,out_dir,sample,adapters)
-    pr.run_fastQC(out_dir)
-
+    # pr.run_trimSE(r1,out_dir,sample,adapters)
+    # pr.run_fastQC(out_dir)
+    os.system('unzip {}/{}_L001_R1_001_paired_fastqc.zip'.format(out_dir, sample))
+    
   else:
     print('Error: Invalid parameter!')
 
 else:
   print('Sorry, there is just RNAseq module for while!')
+
+fastq_trimmed = os.path.join('{}/{}_L001_R1_001_paired.fq.gz' .format(out_dir, sample))
+n_reads_after_trim = pr.get_n_reads(fastq_trimmed)
+percent = (n_reads_after_trim / n_reads) * 100
+n_reads_trimmed_perc = '{} ({}%)'.format(n_reads_after_trim, percent)
+
 
 
 
@@ -193,7 +202,31 @@ im.hAlign = 'LEFT'
 im.vAlign = 'TOP'
 Story.append(im)
 
+title = '<font size=14 >%s</font>' % "Informações Gerais" 	
+Story.append(Paragraph(title, styles["Disclaimer"]))
+Story.append(Spacer(0, 0.5*inch))
 
+header = ['Amostra', 'Tipo de Sequenciamento', 'No. Reads', 'No. Reads após trimming']
+data = [header, [sample, sequencing, n_reads, n_reads_trimmed_perc]]
+
+t = Table(data)
+t.setStyle(TableStyle([
+      ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
+      ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+      ('ALIGN',(0,-1),(-1,-1),'CENTER'),
+      ('VALIGN',(0,-1),(-1,-1),'MIDDLE'),
+      ('BACKGROUND', (0, 0), (-1, 0), colors.darkblue),
+      ('TEXTCOLOR',(0,0),(-1,0),colors.white),
+      ('FONTSIZE',(0,0),(-1,-1), 12),
+      ('TEXTFONT',(0,0),(-1,0), 'Helvetica-Bold')
+  ]))
+Story.append(t)
+
+if type_seq == 'PE' or type_seq == 'pe':
+  pass
+
+elif type_seq == 'SE' or type_seq == 'se':
+  pass
 
 
 
