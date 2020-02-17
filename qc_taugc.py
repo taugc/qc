@@ -71,14 +71,14 @@ if experiment == 0:
     r2=args.r[0]
     # pr.run_trimPE(r1,r2,out_dir,sample,adapters)
     # pr.run_fastQC(out_dir)
-    os.system('unzip {}/{}_L001_R1_001_paired_fastqc.zip'.format(out_dir, sample))
-    os.system('unzip {}/{}_L001_R2_001_paired_fastqc.zip'.format(out_dir, sample))
+    # os.system('unzip {}/{}_L001_R1_001_paired_fastqc.zip'.format(out_dir, sample))
+    # os.system('unzip {}/{}_L001_R2_001_paired_fastqc.zip'.format(out_dir, sample))
 
   elif type_seq == 'SE' or type_seq == 'se':
     r1=args.f[0]
     # pr.run_trimSE(r1,out_dir,sample,adapters)
     # pr.run_fastQC(out_dir)
-    os.system('unzip {}/{}_L001_R1_001_paired_fastqc.zip'.format(out_dir, sample))
+    # os.system('unzip {}/{}_L001_R1_001_paired_fastqc.zip'.format(out_dir, sample))
     
   else:
     print('Error: Invalid parameter!')
@@ -202,11 +202,15 @@ im.hAlign = 'LEFT'
 im.vAlign = 'TOP'
 Story.append(im)
 
-title = '<font size=14 >%s</font>' % "Informações Gerais" 	
+title = '<font size=14 >%s</font>' % "Controle de Qualidade" 	
 Story.append(Paragraph(title, styles["Disclaimer"]))
-Story.append(Spacer(0, 0.5*inch))
+Story.append(Spacer(0, 0.7*inch))
 
-header = ['Amostra', 'Tipo de Sequenciamento', 'No. Reads', 'No. Reads após trimming']
+text = '<font size=10 >%s</font>' % "Tab. 1- Informações gerais sobre os dados." 
+Story.append(Paragraph(text, styles["Left"]))
+Story.append(Spacer(0, 0.1*inch))
+
+header = ['Amostra', 'Tipo de sequenciamento', 'No. reads', 'No. reads após trimming']
 data = [header, [sample, sequencing, n_reads, n_reads_trimmed_perc]]
 
 t = Table(data)
@@ -222,11 +226,77 @@ t.setStyle(TableStyle([
   ]))
 Story.append(t)
 
+chart_style = TableStyle([('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                          ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+                          ('BOX', (0,0), (-1,-1), 0.25, colors.black)])
 if type_seq == 'PE' or type_seq == 'pe':
-  pass
+  ###### quality per base
+  Story.append(Spacer(0, 0.99*inch))
+  text = '<font size=10 >%s</font>' % "Fig. 1- Qualidade por base das sequências R1 e R2." 
+  Story.append(Paragraph(text, styles["Left"]))
+  Story.append(Spacer(0, 0.1*inch))
+  qper_base1 = os.path.join('{}_L001_R1_001_paired_fastqc/Images/per_base_quality.png' .format(sample))
+  qper_base2 = os.path.join('{}_L001_R2_001_paired_fastqc/Images/per_base_quality.png' .format(sample))
+  I1 = Image(qper_base1)
+  I2 = Image(qper_base2)
+  I1.drawHeight = 3.0*inch*I1.drawHeight / I1.drawWidth
+  I1.drawWidth = 3.0*inch
+  I2.drawHeight = 3.0*inch*I2.drawHeight / I2.drawWidth
+  I2.drawWidth = 3.0*inch
+  data = [[I1, I2]]
+  t= Table(data)
+  t.setStyle(chart_style)
+  Story.append(t)
+  Story.append(Spacer(0, 0.2*inch))
+  text = '<font size=12 >%s</font>' % "No eixo X está a posição de cada base na 'read'. O eixo Y mostra o 'score' de qualidade. Quanto maior o 'score', melhor. O plano de fundo do gráfico divide o eixo Y em 'scores' bons (verde), razoáveis (laranja) e de baixa qualidade (vermelho)." 
+  Story.append(Paragraph(text, styles["Justify"]))
+
+  ###### quality per seq
+  Story.append(Spacer(0, 2.0*inch))
+  logo = os.path.abspath('images/taugc.png')
+  im = Image(logo, 0.8*inch,0.8*inch)
+  im.hAlign = 'LEFT'
+  im.vAlign = 'TOP'
+  Story.append(im)
+  Story.append(Spacer(0, 0.3*inch))
+  
+  text = '<font size=10 >%s</font>' % "Fig. 2- Média de qualidade por sequência (R1 e R2)." 
+  Story.append(Paragraph(text, styles["Left"]))
+  Story.append(Spacer(0, 0.1*inch))
+  qper_base1 = os.path.join('{}_L001_R1_001_paired_fastqc/Images/per_sequence_quality.png' .format(sample))
+  qper_base2 = os.path.join('{}_L001_R2_001_paired_fastqc/Images/per_sequence_quality.png' .format(sample))
+  I1 = Image(qper_base1)
+  I2 = Image(qper_base2)
+  I1.drawHeight = 3.0*inch*I1.drawHeight / I1.drawWidth
+  I1.drawWidth = 3.0*inch
+  I2.drawHeight = 3.0*inch*I2.drawHeight / I2.drawWidth
+  I2.drawWidth = 3.0*inch
+  data = [[I1, I2]]
+  t= Table(data)
+  t.setStyle(chart_style)
+  Story.append(t)
+  Story.append(Spacer(0, 0.2*inch))
+  text = '<font size=12 >%s</font>' % "Text." 
+  Story.append(Paragraph(text, styles["Justify"]))
+
 
 elif type_seq == 'SE' or type_seq == 'se':
-  pass
+  ###### quality per base
+  Story.append(Spacer(0, 0.5*inch))
+  text = '<font size=10 >%s</font>' % "Fig. 1- Qualidade por base da sequência." 
+  Story.append(Paragraph(text, styles["Left"]))
+  Story.append(Spacer(0, 0.1*inch))
+  qper_base1 = os.path.join('{}_L001_R1_001_paired_fastqc/Images/per_base_quality.png' .format(sample))
+  I1 = Image(qper_base1)
+  I1.drawHeight = 3.0*inch*I1.drawHeight / I1.drawWidth
+  I1.drawWidth = 3.0*inch
+  data = [[I1]]
+  t= Table(data)
+  t.setStyle(chart_style)
+  Story.append(t)
+  Story.append(Spacer(0, 0.2*inch))
+  text = '<font size=12 >%s</font>' % "No eixo X está a posição de cada base na 'read'. O eixo Y mostra o 'score' de qualidade. Quanto maior o 'score', melhor. O plano de fundo do gráfico divide o eixo Y em 'scores' bons (verde), razoáveis (laranja) e de baixa qualidade (vermelho)." 
+  Story.append(Paragraph(text, styles["Justify"]))
 
 
 
