@@ -304,7 +304,7 @@ if type_seq == 'PE' or type_seq == 'pe':
   Story.append(im)
   Story.append(Spacer(0, 0.3*inch))
 
-  text = '<font size=12 >%s</font>' % "Fig. 3- Conteúdo das reads por base (R1 e R2)."
+  text = '<font size=12 >%s</font>' % "Fig. 4- Conteúdo das reads por base (R1 e R2)."
   Story.append(Paragraph(text, styles["Left"]))
   Story.append(Spacer(0, 0.1*inch))
   qper_base1 = os.path.join('{}_L001_R1_001_paired_fastqc/Images/per_base_sequence_content.png' .format(sample))
@@ -325,7 +325,7 @@ if type_seq == 'PE' or type_seq == 'pe':
 
   ############ Level duplication
   Story.append(Spacer(0, 0.4*inch))
-  text = '<font size=12 >%s</font>' % "Fig. 4- Nível de duplicação das sequências (R1 e R2)."
+  text = '<font size=12 >%s</font>' % "Fig. 5- Nível de duplicação das sequências (R1 e R2)."
   Story.append(Paragraph(text, styles["Left"]))
   Story.append(Spacer(0, 0.1*inch))
   qper_base1 = os.path.join('{}_L001_R1_001_paired_fastqc/Images/duplication_levels.png' .format(sample))
@@ -353,7 +353,7 @@ if type_seq == 'PE' or type_seq == 'pe':
   Story.append(im)
   Story.append(Spacer(0, 0.3*inch))
 
-  text = '<font size=12 >%s</font>' % "Fig. 5- Adaptadores nas sequências analisadas (R1 e R2)."
+  text = '<font size=12 >%s</font>' % "Fig. 6- Adaptadores nas sequências analisadas (R1 e R2)."
   Story.append(Paragraph(text, styles["Left"]))
   Story.append(Spacer(0, 0.1*inch))
   qper_base1 = os.path.join('{}_L001_R1_001_paired_fastqc/Images/adapter_content.png' .format(sample))
@@ -439,7 +439,7 @@ elif type_seq == 'SE' or type_seq == 'se':
   Story.append(im)
   Story.append(Spacer(0, 0.3*inch))
 
-  text = '<font size=12 >%s</font>' % "Fig. 3- Conteúdo das reads por base."
+  text = '<font size=12 >%s</font>' % "Fig. 4- Conteúdo das reads por base."
   Story.append(Paragraph(text, styles["Left"]))
   Story.append(Spacer(0, 0.1*inch))
   qper_base1 = os.path.join('{}_L001_R1_001_paired_fastqc/Images/per_base_sequence_content.png' .format(sample))
@@ -456,7 +456,7 @@ elif type_seq == 'SE' or type_seq == 'se':
 
   ############ Level duplication
   Story.append(Spacer(0, 0.4*inch))
-  text = '<font size=12 >%s</font>' % "Fig. 4- Nível de duplicação das sequências."
+  text = '<font size=12 >%s</font>' % "Fig. 5- Nível de duplicação das sequências."
   Story.append(Paragraph(text, styles["Left"]))
   Story.append(Spacer(0, 0.1*inch))
   qper_base1 = os.path.join('{}_L001_R1_001_paired_fastqc/Images/duplication_levels.png' .format(sample))
@@ -480,7 +480,7 @@ elif type_seq == 'SE' or type_seq == 'se':
   Story.append(im)
   Story.append(Spacer(0, 0.3*inch))
 
-  text = '<font size=12 >%s</font>' % "Fig. 5- Adaptadores nas sequências analisadas."
+  text = '<font size=12 >%s</font>' % "Fig. 6- Adaptadores nas sequências analisadas."
   Story.append(Paragraph(text, styles["Left"]))
   Story.append(Spacer(0, 0.1*inch))
   qper_base1 = os.path.join('{}_L001_R1_001_paired_fastqc/Images/adapter_content.png' .format(sample))
