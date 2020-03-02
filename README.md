@@ -21,5 +21,28 @@
    conda install -c bioconda --file requirements.txt
   ```
 
+  5- Running:
+
+  ```
+  $ python qc_taugc.py -h
+  ```
+
+  ```
+  usage: qc_taugc.py [-h] [-r R] id {SE,PE} {0,1} f
+
+  QC TauGC: used to make the quality control from NGS fastq files and generate
+  an automatic report.
+
+  positional arguments:
+    id          Sample name
+    {SE,PE}     Choose the type of sequencing: (SE): Single-end (PE): Pair-end.
+    {0,1}       Choose experiment: (0): RNAseq (1): Others
+    f           Forward fastq.gz file.
+
+  optional arguments:
+    -h, --help  show this help message and exit
+    -r R        Reverse fastq.gz file.
+  ```
+
   ## Code of conduct
   Please, check our code of conduct [here](/docs/CODE_OF_CONDUCT.md).
