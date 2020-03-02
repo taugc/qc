@@ -244,8 +244,6 @@ if type_seq == 'PE' or type_seq == 'pe':
   Story.append(t)
   Story.append(Spacer(0, 0.2*inch))
 
-
-
   ###### quality per base
   Story.append(Spacer(0, 2.0*inch))
   logo = os.path.abspath('images/taugc.png')
